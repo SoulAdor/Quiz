@@ -23,7 +23,7 @@
         {
           "id" : 2,
           "type" : "MULTIPLE_CHOICE",
-          "questions" : "How do you select the size of the vector?",
+          "question" : "How do you select the size of the vector?",
           "answers": [
             {
               "id" : 1,
@@ -45,7 +45,7 @@
         {
           "id" : 3,
           "type" : "CHECKBOXES",
-          "questions" : "How do you access it's fifth element?",
+          "question" : "How do you access it's fifth element?",
           "answers": [
             {
               "id" : 1,
