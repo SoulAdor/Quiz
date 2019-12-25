@@ -1,5 +1,6 @@
 import React from 'react'
 import { Form, Button } from 'react-bootstrap'
+import { connect } from 'react-redux'
 
 const getId = (questionId, answerId) => `${questionId}/${answerId}`
 
@@ -78,6 +79,8 @@ const insertCheckboxesAnswer = (answer, question) => {
 
 
 const Quiz = ({quiz}) => {
+  if (!quiz) return null
+
   const submitClicked = event => {
     event.preventDefault()
     event.persist()
@@ -104,8 +107,7 @@ const Quiz = ({quiz}) => {
     })
     console.log(answer)
   }
-
-
+  
   return (
     <Form onSubmit={submitClicked}>
     <h2>{quiz.title}</h2>
@@ -124,4 +126,12 @@ const Quiz = ({quiz}) => {
   )
 }
 
-export default Quiz
+const mapStateToProps = (state, ownProps) => {
+  return {
+    quiz: state.quizzes.find(quiz => quiz.id === ownProps.id)
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(Quiz)

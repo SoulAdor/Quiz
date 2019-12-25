@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/quizzes'
+const baseUrl = '/quizzes'
 
 let token = null
 

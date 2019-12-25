@@ -9,7 +9,7 @@
   ],
   "quizzes": [
     {
-      "id": 1,
+      "id": "1",
       "creatorId" : 1,
       "creationDate" : 25,
       "title" : "Vectors",

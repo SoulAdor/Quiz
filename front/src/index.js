@@ -5,17 +5,19 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import userReducer from './reducers/userReducer'
+import quizzesReducer from './reducers/quizzesReducer'
 
 import App from './components/App'
 
 const reducer = combineReducers({
-   user: userReducer
- })
+  user: userReducer,
+  quizzes: quizzesReducer
+})
  
 const store = createStore(reducer, applyMiddleware(thunk))
 ReactDOM.render(
-   <Provider store={store}>
-     <App />
-   </Provider>,
-   document.getElementById('root')
- )
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)

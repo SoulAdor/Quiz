@@ -1,28 +1,45 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import Quiz from './Quiz'
+import Quizzes from './Quizzes'
 import Menu from './Menu'
 import axios from 'axios'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { initQuizzes } from '../reducers/quizzesReducer'
 
-const App = () => {
-  const [ quiz, setQuiz ] = useState(null)
+const App = ({ user, initQuizzes }) =>  {
+  useEffect(() => {initQuizzes()}, [initQuizzes])
 
-  useEffect(() => {
-    axios.get('http://localhost:3001/quizzes').then(response => {
-      const quizzes = response.data
-      setQuiz(quizzes[0])
-    })
-  }, []);
-
-  if (!quiz) return null
   return (
     <div className='container'>
       <Router>
         <Menu/>
-        <Quiz quiz = {quiz}></Quiz>
+        <Route exact path="/" render={() => <Quizzes />} />
+        <Route exact path="/quizzes/:id" render={({ match }) =>
+          <Quiz id={match.params.id} />
+        } />
       </Router>
     </div>
   )
 }
 
-export default App
+App.propTypes = {
+  user: PropTypes.object,
+  initQuizzes: PropTypes.func.isRequired
+}
+
+const mapDispatchToProps = {
+  initQuizzes
+}
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+) (App)
