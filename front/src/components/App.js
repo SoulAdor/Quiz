@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Quiz from './Quiz'
 import Quizzes from './Quizzes'
+import CreateQuiz from './CreateQuiz'
 import Menu from './Menu'
-import axios from 'axios'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { initQuizzes } from '../reducers/quizzesReducer'
 
@@ -16,6 +16,7 @@ const App = ({ user, initQuizzes }) =>  {
       <Router>
         <Menu/>
         <Route exact path="/" render={() => <Quizzes />} />
+        <Route exact path="/create" render={() => <CreateQuiz />} />
         <Route exact path="/quizzes/:id" render={({ match }) =>
           <Quiz id={match.params.id} />
         } />
