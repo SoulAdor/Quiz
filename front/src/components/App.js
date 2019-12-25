@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Quiz from './Quiz'
+import Menu from './Menu'
 import axios from 'axios'
-
-
-
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const App = () => {
   const [ quiz, setQuiz ] = useState(null)
@@ -18,7 +17,10 @@ const App = () => {
   if (!quiz) return null
   return (
     <div className='container'>
-      <Quiz quiz = {quiz}></Quiz>
+      <Router>
+        <Menu/>
+        <Quiz quiz = {quiz}></Quiz>
+      </Router>
     </div>
   )
 }

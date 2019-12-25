@@ -29,7 +29,6 @@ const CheckboxesQuestion = ({question}) => (
   </>
 )
 
-
 const Question = ({question}) => {
   switch (question.type) {
     case 'TEXT':
