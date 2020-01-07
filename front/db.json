@@ -49,25 +49,22 @@
           "answers": [
             {
               "id" : 1,
-              "correct" : false,
               "answer" : "vector(5)"
             },
             {
               "id" : 2,
-              "correct" : false,
               "answer" : "vector(4)"
             },
             {
               "id" : 3,
-              "correct" : false,
               "answer" : "vector[5]"
             },
             {
               "id" : 4,
-              "correct" : true,
               "answer" : "vector[4]"
             }
-          ]
+          ],
+          "correctAnswerId" : 4
         }
       ]
     }

@@ -13,7 +13,7 @@ const reducer = combineReducers({
   user: userReducer,
   quizzes: quizzesReducer
 })
- 
+
 const store = createStore(reducer, applyMiddleware(thunk))
 ReactDOM.render(
   <Provider store={store}>

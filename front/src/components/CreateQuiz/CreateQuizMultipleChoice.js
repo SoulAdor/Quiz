@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button } from 'react-bootstrap'
 import Answer from './Answer'
 import { useCounter } from '../../hooks/useCounter'
+import { Button } from 'react-bootstrap'
 
 const CreateQuizMultipleChoice = ({ multipleChoiceQuestion, setMultipleChoiceQuestion }) => {
   const idCounter = useCounter (1)

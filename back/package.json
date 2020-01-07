@@ -1,0 +1,34 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "Backend for Quiz website",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node index.js",
+    "watch": "cross-env NODE_ENV=development nodemon index.js",
+    "start:test": "cross-env NODE_ENV=test node index.js",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
+    "deploy": "git push heroku master",
+    "logs:prod": "heroku logs --tail",
+    "lint": "eslint ."
+  },
+  "author": "Andreas Niedens",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.8.5",
+    "mongoose-unique-validator": "^2.0.3",
+    "save": "^2.4.0"
+  },
+  "devDependencies": {
+    "cross-env": "^6.0.3",
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.2"
+  }
+}

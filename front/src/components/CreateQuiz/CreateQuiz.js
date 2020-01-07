@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 import { useCounter } from '../../hooks/useCounter'
 import CreateQuizText from './CreateQuizText'
 import CreateQuizCheckboxes from './CreateQuizCheckboxes'
 import CreateQuizMultipleChoice from './CreateQuizMultipleChoice'
+import { Form, Button } from 'react-bootstrap'
 
 const CreateQuiz = ({ createQuiz }) => {
   const [title, setTitle] = useState ('')
@@ -12,7 +13,6 @@ const CreateQuiz = ({ createQuiz }) => {
   const [questions, setQuestions] = useState ([])
   const idCounter = useCounter (1)
 
-  console.log(questions)
   const setQuestion = updatedQuestion => {
     setQuestions (questions.map (question => question.id === updatedQuestion.id ? updatedQuestion : question))
   }
@@ -31,40 +31,32 @@ const CreateQuiz = ({ createQuiz }) => {
     }
   }
 
+  const AddClicked = async (event) => {
+    let nextQuestion = {}
+    switch(questionType) {
+    case 'Checkboxes':
+      nextQuestion.type = 'CHECKBOXES'
+      nextQuestion.answers = []
+      break
+    case 'Multiple choice':
+      nextQuestion.type = 'MULTIPLE_CHOICE'
+      nextQuestion.answers = []
+      break
+    case 'Text':
+      nextQuestion.type = 'TEXT'
+      break
+    default:
+      alert('Wrong type')
+      return
+    }
+    nextQuestion.id = idCounter.nextValue()
+    setQuestions ([...questions, nextQuestion])
+  }
+  
   const handleCreate = async (event) => {
     event.preventDefault()
-    try {
-      const newQuiz = { title, description, questions }
-      await createQuiz(newQuiz)
-    } catch (exception) {
-      console.log(exception)
-    }
-  }
-
-  const AddClicked = async (event) => {
-    try {
-      let nextQuestion = {}
-      switch(questionType) {
-      case 'Checkboxes':
-        nextQuestion.type = 'CHECKBOXES'
-        nextQuestion.answers = []
-        break
-      case 'Multiple choice':
-        nextQuestion.type = 'MULTIPLE_CHOICE'
-        nextQuestion.answers = []
-        break
-      case 'Text':
-        nextQuestion.type = 'TEXT'
-        break
-      default:
-        alert('Wrong type')
-        return
-      }
-      nextQuestion.id = idCounter.nextValue()
-      setQuestions ([...questions, nextQuestion])
-    } catch (exception) {
-      console.log(exception)
-    }
+    const newQuiz = { title, description, questions }
+    await createQuiz(newQuiz)
   }
 
   return (
@@ -97,6 +89,10 @@ const CreateQuiz = ({ createQuiz }) => {
       </Form>
     </div>
   )
+}
+
+CreateQuiz.propTypes = {
+  createQuiz: PropTypes.func.isRequired
 }
 
 export default CreateQuiz
