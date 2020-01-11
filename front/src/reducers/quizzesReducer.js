@@ -2,39 +2,85 @@ import quizzesService from '../services/quizzes'
 
 const quizzesAtStart = []
 
+const DBToQuiz = quizDB => {
+  if (!quizDB) return null
+  const convertedQuiz = {
+    ...quizDB, 
+    questions : [],
+    textQuestions : undefined, 
+    multipleChoiceQuestions : undefined, 
+    checkboxQuestions : undefined
+  }
+  quizDB.textQuestions.map (question => convertedQuiz.questions.push ({question, type : "TEXT" }) )
+  quizDB.multipleChoiceQuestions.map (question => convertedQuiz.questions.push ({question, type : "MULTIPLE_CHOICE" }) )
+  quizDB.checkboxQuestions.map (question => convertedQuiz.questions.push ({question, type : "CHECKBOXES" }) )
+  return convertedQuiz
+}
+
+const quizToDB = quiz => {
+  if (!quiz) return null
+  const convertedQuiz = {
+    ...quiz, 
+    questions : undefined,
+    textQuestions : [],
+    multipleChoiceQuestions : [],
+    checkboxQuestions : []
+  }
+  quiz.questions.forEach (question => {
+    switch(question.type) {
+      case "TEXT":
+        convertedQuiz.textQuestions.push (question)
+        break
+      case "MULTIPLE_CHOICE":
+        convertedQuiz.multipleChoiceQuestions.push (question)
+        break
+      case "CHECKBOXES":
+        convertedQuiz.checkboxQuestions.push (question)
+        break
+      default:
+        break
+    }
+  })
+  return convertedQuiz
+}
+
+const DBToQuizzes = quizzes => {
+  return quizzes.map (quiz => DBToQuiz(quiz))
+}
+
 export const initQuizzes = () => {
   return async dispatch => {
     const quizzes = await quizzesService.getAll()
     dispatch({
       type: 'INIT_QUIZZES',
-      data: quizzes
+      data: DBToQuizzes (quizzes)
     })
   }
 }
 
 export const createQuiz = quiz => {
   return async dispatch => {
-    const newQuiz = await quizzesService.create(quiz)
+    const newQuiz = await quizzesService.create(quizToDB (quiz))
     dispatch({
       type: 'NEW_QUIZ',
-      data: newQuiz,
+      data: DBToQuiz (newQuiz),
     })
   }
 }
 
 export const updateQuiz = quiz => {
   return async dispatch => {
-    const updatedQuiz = await quizzesService.update(quiz)
+    const updatedQuiz = await quizzesService.update( quizToDB (quiz) )
     dispatch({
       type: 'UPDATE_QUIZ',
-      data: updatedQuiz,
+      data: DBToQuiz (updatedQuiz),
     })
   }
 }
 
 export const deleteQuiz = quiz => {
   return async dispatch => {
-    await quizzesService.remove(quiz)
+    await quizzesService.remove( quizToDB (quiz) )
     dispatch({
       type: 'DELETE_QUIZ',
       data: quiz,

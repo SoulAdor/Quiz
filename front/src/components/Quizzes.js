@@ -7,9 +7,9 @@ const Quizzes = ({ quizzes }) => {
   return (
     <ul>
       {quizzes.map (quiz =>
-        <h1 key={quiz.id}>
+        <h2 key={quiz.id}>
           <Link to={`/quizzes/${quiz.id}`}> {quiz.title} </Link>
-        </h1>
+        </h2>
       )}
     </ul>
   )

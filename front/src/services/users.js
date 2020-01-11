@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getToken } from './token'
 const baseUrl = '/api/users'
 
 const getAll = async () => {
@@ -7,17 +8,20 @@ const getAll = async () => {
 }
 
 const create = async user => {
-  const response = await axios.post(baseUrl, user)
+  const config = { headers: { Authorization: getToken() } }
+  const response = await axios.post(baseUrl, user, config)
   return response.data
 }
 
 const update = async user => {
-  const response = await axios.put(`${baseUrl}/${user.id}`, user)
+  const config = { headers: { Authorization: getToken() } }
+  const response = await axios.put(`${baseUrl}/${user.id}`, user, config)
   return response.data
 }
 
 const remove = async user => {
-  const response = await axios.delete(`${baseUrl}/${user.id}`, user)
+  const config = { headers: { Authorization: getToken() } }
+  const response = await axios.delete(`${baseUrl}/${user.id}`, user, config)
   return response.data
 }
 

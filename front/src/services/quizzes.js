@@ -1,11 +1,6 @@
 import axios from 'axios'
-const baseUrl = '/quizzes'
-
-let token = null
-
-const setToken = newToken => {
-  token = `bearer ${newToken}`
-}
+import { getToken } from './token'
+const baseUrl = '/api/quizzes'
 
 const getAll = async () => {
   const response = await axios.get(baseUrl)
@@ -13,21 +8,21 @@ const getAll = async () => {
 }
 
 const create = async quiz => {
-  const config = { headers: { Authorization: token } }
+  const config = { headers: { Authorization: getToken() } }
   const response = await axios.post(baseUrl, quiz, config)
   return response.data
 }
 
 const update = async quiz => {
-  const config = { headers: { Authorization: token } }
+  const config = { headers: { Authorization: getToken() } }
   const response = await axios.put(`${baseUrl}/${quiz.id}`, quiz, config)
   return response.data
 }
 
 const remove = async quiz => {
-  const config = { headers: { Authorization: token } }
+  const config = { headers: { Authorization: getToken() } }
   const response = await axios.delete(`${baseUrl}/${quiz.id}`, quiz, config)
   return response.data
 }
 
-export default { setToken, getAll, create, update, remove }
+export default { getAll, create, update, remove }

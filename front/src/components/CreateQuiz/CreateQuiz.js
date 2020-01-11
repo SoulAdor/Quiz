@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useCounter } from '../../hooks/useCounter'
+import { connect } from 'react-redux'
+
+import { createQuiz } from '../../reducers/quizzesReducer'
 import CreateQuizText from './CreateQuizText'
 import CreateQuizCheckboxes from './CreateQuizCheckboxes'
 import CreateQuizMultipleChoice from './CreateQuizMultipleChoice'
@@ -95,4 +98,11 @@ CreateQuiz.propTypes = {
   createQuiz: PropTypes.func.isRequired
 }
 
-export default CreateQuiz
+const mapDispatchToProps = {
+  createQuiz
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(CreateQuiz)

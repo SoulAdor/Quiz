@@ -89,7 +89,7 @@ const Quiz = ({ quiz }) => {
       quizId:  quiz.id,
       answers: []
     }
-    quiz.questions.map (question => {
+    quiz.questions.forEach (question => {
       switch (question.type) {
       case 'TEXT':
         insertTextAnswer (answer, question)

@@ -10,6 +10,7 @@ const cors = require('cors')
 
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
+const quizzesRouter = require('./controllers/quizzes')
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')
   app.use('/api/testing', testingRouter)
@@ -27,10 +28,14 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true })
 app.use(cors())
 app.use(express.static('build'))
 app.use(bodyParser.json())
+
 app.use(middleware.tokenExtractor)
 app.use(middleware.requestLogger)
+
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
+app.use('/api/quizzes', quizzesRouter)
+
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 

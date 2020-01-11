@@ -12,7 +12,13 @@ const userSchema = mongoose.Schema({
   passwordHash: {
     type: String,
     required : true
-  }
+  },
+  quizzes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Quiz'
+    }
+  ]
 })
 
 userSchema.plugin(uniqueValidator)

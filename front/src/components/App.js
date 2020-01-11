@@ -15,7 +15,7 @@ import { initUser } from '../reducers/userReducer'
 
   const App = ({ initUser, initQuizzes }) =>  {
   useEffect(() => {initUser ()}, [initUser])
-  // useEffect(() => {initQuizzes()}, [initQuizzes])
+  useEffect(() => {initQuizzes()}, [initQuizzes])
   
   return (
     <div className='container'>

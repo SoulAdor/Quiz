@@ -1,4 +1,4 @@
-import quizzesService from '../services/quizzes'
+import { setToken } from '../services/token'
 import loginService from '../services/login'
 import usersService from '../services/users'
 
@@ -8,7 +8,7 @@ const userAtStart = null
 export const initUser = () => {
   const user = JSON.parse(window.localStorage.getItem('loggedQuizAppUser'))
   const token = user ? user.token : null
-  quizzesService.setToken(token)
+  setToken(token)
   return async dispatch => {
     dispatch({
       type: 'LOG_IN_USER',
@@ -22,7 +22,7 @@ export const logInUser = ({ username, password, name }) => {
     const user = await loginService.login({ username, password })
     window.localStorage.setItem('loggedQuizAppUser', JSON.stringify(user))
     const token = user ? user.token : null
-    quizzesService.setToken(token)
+    setToken(token)
     dispatch({
       type: 'LOG_IN_USER',
       data: user
@@ -37,7 +37,7 @@ export const signUpUser = ({ username, password, name }) => {
     const tokenUser = await loginService.login({ username, password })
     window.localStorage.setItem('loggedQuizAppUser', JSON.stringify(tokenUser))
     const token = user ? user.token : null
-    quizzesService.setToken(token)
+    setToken(token)
     dispatch({
       type: 'LOG_IN_USER',
       data: user
@@ -47,7 +47,7 @@ export const signUpUser = ({ username, password, name }) => {
 
 export const logOutUser = () => {
   window.localStorage.setItem('loggedQuizAppUser', JSON.stringify(null))
-  quizzesService.setToken(null)
+  setToken(null)
   return async dispatch => {
     dispatch({
       type: 'LOG_OUT_USER'

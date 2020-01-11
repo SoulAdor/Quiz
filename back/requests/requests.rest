@@ -1,9 +1,9 @@
 //GET http://localhost:3001/notes
 
-POST http://localhost:3001/api/persons
+POST http://localhost:3003/api/login
 Content-Type: application/json
 
 {
-   "name": "New ",
-   "number": "s"
+   "username": "Andy",
+   "password": "s"
 }
