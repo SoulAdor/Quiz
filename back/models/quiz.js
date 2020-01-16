@@ -35,11 +35,28 @@ const quizSchema = mongoose.Schema({
   }]
 })
 
+const objectToJson = object => {
+  object.id = object._id.toString()
+  delete object._id
+  return object
+}
+
+const objectsToJson = objects => {
+  return objects.map (object => objectToJson (object) )
+}
+
+const questionToJson = question => {
+  question.answers = objectsToJson (question.answers)
+  return objectToJson (question)
+}
+
 quizSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
+  transform: (document, returnedQuiz) => {
+    returnedQuiz = objectToJson (returnedQuiz)
+    returnedQuiz.textQuestions = returnedQuiz.textQuestions.map (question => objectToJson (question))
+    returnedQuiz.multipleChoiceQuestions = returnedQuiz.multipleChoiceQuestions.map (question => questionToJson (question))
+    returnedQuiz.checkboxQuestions = returnedQuiz.checkboxQuestions.map (question => questionToJson (question))
+    delete returnedQuiz.__v
   }
 })
 

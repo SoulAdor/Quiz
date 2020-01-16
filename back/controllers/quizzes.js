@@ -15,7 +15,6 @@ quizzesRouter.post('/', async (request, response, next) => {
     const token = request.token
     if (!token) return response.status(401).json({ error: 'token missing' })
     const decodedToken = jwt.verify(token, process.env.SECRET)
-    if (!decodedToken.id) return  response.status(401).json({ error: 'invalid token' })
 
     // Find user with given id
     const user = await User.findById(decodedToken.id)
@@ -26,7 +25,7 @@ quizzesRouter.post('/', async (request, response, next) => {
     const savedQuiz = await quiz.save()
 
     // Update user
-    user.quizzes = user.quizzes.concat(savedQuiz._id)
+    user.quizzes = user.quizzes.concat(savedQuiz.id)
     await user.save()
 
     // Return populated quiz
@@ -34,18 +33,6 @@ quizzesRouter.post('/', async (request, response, next) => {
     response.status(201).json(populatedQuiz)
   } catch(exception) {
     next (exception)
-  }
-})
-
-quizzesRouter.delete('/:id', async (request, response, next) => {
-  try {
-    const quiz = await Quiz.findById(request.params.id)
-    if (!quiz) return  response.status(404).json({ error: 'Quiz not found' })
-
-    await Quiz.findByIdAndRemove(request.params.id)
-    response.status(204).end()
-  } catch (exception) {
-    next(exception)
   }
 })
 

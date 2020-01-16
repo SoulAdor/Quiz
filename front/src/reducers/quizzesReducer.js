@@ -4,28 +4,27 @@ const quizzesAtStart = []
 
 const DBToQuiz = quizDB => {
   if (!quizDB) return null
-  const convertedQuiz = {
-    ...quizDB, 
-    questions : [],
-    textQuestions : undefined, 
-    multipleChoiceQuestions : undefined, 
-    checkboxQuestions : undefined
-  }
-  quizDB.textQuestions.map (question => convertedQuiz.questions.push ({question, type : "TEXT" }) )
-  quizDB.multipleChoiceQuestions.map (question => convertedQuiz.questions.push ({question, type : "MULTIPLE_CHOICE" }) )
-  quizDB.checkboxQuestions.map (question => convertedQuiz.questions.push ({question, type : "CHECKBOXES" }) )
+  const convertedQuiz = {...quizDB, questions : [],}
+  delete convertedQuiz.textQuestions
+  delete convertedQuiz.multipleChoiceQuestions
+  delete convertedQuiz.checkboxQuestions
+
+  quizDB.textQuestions.map (question => convertedQuiz.questions.push ({...question, type : "TEXT" }) )
+  quizDB.multipleChoiceQuestions.map (question => convertedQuiz.questions.push ({...question, type : "MULTIPLE_CHOICE" }) )
+  quizDB.checkboxQuestions.map (question => convertedQuiz.questions.push ({...question, type : "CHECKBOXES" }) )
   return convertedQuiz
 }
 
 const quizToDB = quiz => {
   if (!quiz) return null
   const convertedQuiz = {
-    ...quiz, 
-    questions : undefined,
+    ...quiz,
     textQuestions : [],
     multipleChoiceQuestions : [],
     checkboxQuestions : []
   }
+  delete convertedQuiz.questions
+
   quiz.questions.forEach (question => {
     switch(question.type) {
       case "TEXT":

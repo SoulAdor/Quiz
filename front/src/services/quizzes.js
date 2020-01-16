@@ -3,7 +3,8 @@ import { getToken } from './token'
 const baseUrl = '/api/quizzes'
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl)
+  const config = { headers: { Authorization: getToken() } }
+  const response = await axios.get(baseUrl, config)
   return response.data
 }
 

@@ -13,12 +13,14 @@ const userSchema = mongoose.Schema({
     type: String,
     required : true
   },
-  quizzes: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Quiz'
-    }
-  ]
+  quizzes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Quiz'
+  }],
+  answers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Answer'
+  }]
 })
 
 userSchema.plugin(uniqueValidator)

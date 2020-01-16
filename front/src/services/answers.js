@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { getToken } from './token'
-const baseUrl = '/api/users'
+const baseUrl = '/api/answers'
 
 const getAll = async () => {
   const config = { headers: { Authorization: getToken() } }
@@ -8,21 +8,21 @@ const getAll = async () => {
   return response.data
 }
 
-const create = async user => {
+const create = async answer => {
   const config = { headers: { Authorization: getToken() } }
-  const response = await axios.post(baseUrl, user, config)
+  const response = await axios.post(baseUrl, answer, config)
   return response.data
 }
 
-const update = async user => {
+const update = async answer => {
   const config = { headers: { Authorization: getToken() } }
-  const response = await axios.put(`${baseUrl}/${user.id}`, user, config)
+  const response = await axios.put(`${baseUrl}/${answer.id}`, answer, config)
   return response.data
 }
 
-const remove = async user => {
+const remove = async answer => {
   const config = { headers: { Authorization: getToken() } }
-  const response = await axios.delete(`${baseUrl}/${user.id}`, user, config)
+  const response = await axios.delete(`${baseUrl}/${answer.id}`, answer, config)
   return response.data
 }
 

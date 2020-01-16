@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
+
 import PropTypes from 'prop-types'
 import { useCounter } from '../../hooks/useCounter'
-import { connect } from 'react-redux'
 
 import { createQuiz } from '../../reducers/quizzesReducer'
 import CreateQuizText from './CreateQuizText'
 import CreateQuizCheckboxes from './CreateQuizCheckboxes'
 import CreateQuizMultipleChoice from './CreateQuizMultipleChoice'
+
 import { Form, Button } from 'react-bootstrap'
 
-const CreateQuiz = ({ createQuiz }) => {
+const CreateQuiz = ({ createQuiz, history }) => {
   const [title, setTitle] = useState ('')
   const [description, setDescription] = useState ('')
   const [questionType, setQuestionType] = useState ('Checkboxes')
@@ -60,6 +63,8 @@ const CreateQuiz = ({ createQuiz }) => {
     event.preventDefault()
     const newQuiz = { title, description, questions }
     await createQuiz(newQuiz)
+    alert('Your quiz has been added to database')
+    history.push('/')
   }
 
   return (
@@ -102,7 +107,7 @@ const mapDispatchToProps = {
   createQuiz
 }
 
-export default connect(
+export default withRouter (connect(
   null,
   mapDispatchToProps
-)(CreateQuiz)
+)(CreateQuiz) )

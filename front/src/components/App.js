@@ -12,11 +12,13 @@ import Signup from './Signup'
 
 import { initQuizzes } from '../reducers/quizzesReducer'
 import { initUser } from '../reducers/userReducer'
+import { initAnswers } from '../reducers/answersReducer'
 
-  const App = ({ initUser, initQuizzes }) =>  {
+const App = ({ initUser, initQuizzes, initAnswers, user }) =>  {
   useEffect(() => {initUser ()}, [initUser])
   useEffect(() => {initQuizzes()}, [initQuizzes])
-  
+  useEffect(() => { if (user) initAnswers()}, [initAnswers, user])
+
   return (
     <div className='container'>
       <Router>
@@ -35,15 +37,24 @@ import { initUser } from '../reducers/userReducer'
 
 App.propTypes = {
   initQuizzes: PropTypes.func.isRequired,
-  initUser: PropTypes.func.isRequired
+  initUser: PropTypes.func.isRequired,
+  initAnswers: PropTypes.func.isRequired,
+  user: PropTypes.object
 }
 
 const mapDispatchToProps = {
   initQuizzes,
-  initUser
+  initUser,
+  initAnswers,
+}
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.user
+  }
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 ) (App)

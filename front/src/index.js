@@ -4,14 +4,17 @@ import ReactDOM from 'react-dom'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
+
 import userReducer from './reducers/userReducer'
 import quizzesReducer from './reducers/quizzesReducer'
+import answersReducer from './reducers/answersReducer'
 
 import App from './components/App'
 
 const reducer = combineReducers({
   user: userReducer,
-  quizzes: quizzesReducer
+  quizzes: quizzesReducer,
+  answers: answersReducer
 })
 
 const store = createStore(reducer, applyMiddleware(thunk))
