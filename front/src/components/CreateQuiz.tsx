@@ -15,7 +15,6 @@ import { Form, Button } from 'react-bootstrap'
 const CreateQuiz = ({ createQuiz, history }) => {
   const [title, setTitle] = useState ('')
   const [description, setDescription] = useState ('')
-  const [questionType, setQuestionType] = useState ('Checkboxes')
   const [questions, setQuestions] = useState ([])
   const idCounter = useCounter (1)
 
@@ -62,7 +61,10 @@ const CreateQuiz = ({ createQuiz, history }) => {
     setQuestions ([...questions, nextQuestion])
     */
   }
-  
+  const AddTextProblem = () => {
+    console.log('Adding Text Problem')
+  }
+
   const handleCreate = async (event) => {
     event.preventDefault()
     const newQuiz = { title, description, questions }
@@ -88,17 +90,10 @@ const CreateQuiz = ({ createQuiz, history }) => {
           </div> )}
       </div>
 
-      <Form.Label> Choose next question type: </Form.Label>
-      <select className="selectpicker show-tick" onChange={({ target }) => setQuestionType(target.value)}  data-style="btn-info">
-        <option selected> Checkboxes </option>
-        <option> Multiple choice </option>
-        <option> Text </option>
-      </select>
-      <Button variant='secondary' onClick={AddClicked}> Add question </Button>
+      <button className="btn btn-primary" type="submit" onClick={AddTextProblem}> {`Text`} </button>
+      <button className="btn btn-primary" type="submit"> {`RadioButton`} </button>
+      <button className="btn btn-primary" type="submit"> {`Checkbox`} </button>
 
-      <Form onSubmit={handleCreate}>
-        <button className="btn btn-primary" type="submit"> {`Create`} </button>
-      </Form>
     </div>
   )
 }

@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Menu from './Menu'
 import Quiz from './Quiz'
 import Quizzes from './Quizzes'
-import CreateQuiz from './CreateQuiz'
+import QuizForm from './QuizForm'
 import Login from './Login'
 import Signup from './Signup'
 
@@ -25,7 +25,7 @@ const App = ({ initUser, initQuizzes, initAnswers, user }) => {
       <Router>
         <Menu/>
         <Route exact path="/" render={() => <Quizzes />} />
-        <Route exact path="/create" render={() => <CreateQuiz />} />
+        <Route exact path="/create" render={() => <QuizForm />} />
         <Route exact path="/login" render={() => <Login />} />
         <Route exact path="/signup" render={() => <Signup />} />
         <Route exact path="/quizzes/:id" render={({ match }) =>

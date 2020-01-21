@@ -1,8 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-const Text = (props) => {
-  return null
+const Text = ({ submission, setSubmission }) => {
+  return <div> Text submissions have no right answer so far </div>
 }
 
 export default Text
