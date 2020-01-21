@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
 import PropTypes from 'prop-types'
-import { Form, Button } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import { signUpUser } from '../reducers/userReducer'
 
 const Signup = ( {signUpUser, history} ) => {
@@ -32,7 +32,7 @@ const Signup = ( {signUpUser, history} ) => {
         <Form.Control type="text" name="name" placeholder="Enter your name"/>
       </Form.Group>
       <Form.Group>
-        <Button variant="primary" type ='sumbit'> {`Sign up`} </Button>
+        <button className="btn btn-primary" type="submit"> {`Sign up`} </button>
       </Form.Group>
     </Form>
   )

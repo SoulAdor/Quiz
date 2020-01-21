@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Menu from './Menu'
 import Quiz from './Quiz'
 import Quizzes from './Quizzes'
-import CreateQuiz from './CreateQuiz/CreateQuiz'
+import CreateQuiz from './CreateQuiz'
 import Login from './Login'
 import Signup from './Signup'
 
@@ -14,7 +14,8 @@ import { initQuizzes } from '../reducers/quizzesReducer'
 import { initUser } from '../reducers/userReducer'
 import { initAnswers } from '../reducers/answersReducer'
 
-const App = ({ initUser, initQuizzes, initAnswers, user }) =>  {
+
+const App = ({ initUser, initQuizzes, initAnswers, user }) => {
   useEffect(() => {initUser ()}, [initUser])
   useEffect(() => {initQuizzes()}, [initQuizzes])
   useEffect(() => { if (user) initAnswers()}, [initAnswers, user])

@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
 import PropTypes from 'prop-types'
-import { useCounter } from '../../hooks/useCounter'
 
-import { createQuiz } from '../../reducers/quizzesReducer'
-import CreateQuizText from './CreateQuizText'
-import CreateQuizCheckboxes from './CreateQuizCheckboxes'
-import CreateQuizMultipleChoice from './CreateQuizMultipleChoice'
+import { useCounter } from '../hooks/useCounter'
+import { createQuiz } from '../reducers/quizzesReducer'
+import CreateQuizText from './CreateQuiz/CreateQuizText'
+import CreateQuizCheckboxes from './CreateQuiz/CreateQuizCheckboxes'
+import CreateQuizMultipleChoice from './CreateQuiz/CreateQuizMultipleChoice'
 
 import { Form, Button } from 'react-bootstrap'
 
@@ -38,6 +38,9 @@ const CreateQuiz = ({ createQuiz, history }) => {
   }
 
   const AddClicked = async (event) => {
+    console.log('add')
+    return
+    /*
     let nextQuestion = {}
     switch(questionType) {
     case 'Checkboxes':
@@ -57,6 +60,7 @@ const CreateQuiz = ({ createQuiz, history }) => {
     }
     nextQuestion.id = idCounter.nextValue()
     setQuestions ([...questions, nextQuestion])
+    */
   }
   
   const handleCreate = async (event) => {
@@ -74,7 +78,7 @@ const CreateQuiz = ({ createQuiz, history }) => {
       <Form.Control type='text' value={title} onChange={({ target }) => setTitle(target.value)} name='title' placeholder="Enter title"/>
 
       <Form.Label> Description: </Form.Label>
-      <Form.Control as='textarea' value={description} onChange={({ target }) => setDescription(target.value)} rows='10' placeholder="Enter description"/>
+      <Form.Control as='textarea' value={description} onChange={({ target }) => setDescription((target as HTMLTextAreaElement).value)} rows='10' placeholder="Enter description"/>
 
       <div>
         {questions.map (question =>
@@ -86,14 +90,14 @@ const CreateQuiz = ({ createQuiz, history }) => {
 
       <Form.Label> Choose next question type: </Form.Label>
       <select className="selectpicker show-tick" onChange={({ target }) => setQuestionType(target.value)}  data-style="btn-info">
-        <option defaultValue> Checkboxes </option>
+        <option selected> Checkboxes </option>
         <option> Multiple choice </option>
         <option> Text </option>
       </select>
       <Button variant='secondary' onClick={AddClicked}> Add question </Button>
 
       <Form onSubmit={handleCreate}>
-        <Button variant='primary' type ='sumbit'> Create </Button>
+        <button className="btn btn-primary" type="submit"> {`Create`} </button>
       </Form>
     </div>
   )

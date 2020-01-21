@@ -15,46 +15,6 @@ const Quiz = ({ quiz, createAnswer }) => {
     multipleChoiceAnswers : []
   })
 
-  useEffect(() => {
-    if (quiz) {
-      quiz.questions.forEach (question => {
-        const answer = {
-          questionId : question.id
-        }
-        switch (question.type) {
-        case 'TEXT':
-          answer.answer = ''
-          setAnswers ({...answers, textAnswers : [...answers.textAnswers, answer]})
-          break
-        case 'CHECKBOXES':
-          if (question.answers) {
-            answer.answers = question.answers.map (question => {
-              return {
-                correct : false,
-                questionId : question.id 
-              }
-            })
-            setAnswers ({...answers, checkboxesAnswers : [...answers.checkboxesAnswers, answer]})
-          }
-          break
-        case 'MULTIPLE_CHOICE':
-          if (question.answers) {
-            answer.answers = question.answers.map (question => {
-              return {
-                correct : false,
-                questionId : question.id 
-              }
-            })
-            setAnswers ({...answers, multipleChoiceAnswers : [...answers.multipleChoiceAnswers, answer]})
-          }
-          break
-        default:
-          alert ('Wrong queston type')
-        }
-      })
-    }
-  }, [quiz])
-
   if (!quiz) return null
 
   const setTextAnswer = (newTextAnswer) => {
@@ -107,7 +67,7 @@ const Quiz = ({ quiz, createAnswer }) => {
     const answer = {
       quiz: quiz.id,
       textAnswers : answers.textAnswers,
-      checkboxAnswers : answers.checkboxAnswers,
+      checkboxAnswers : answers.checkboxesAnswers,
       multipleChoiceAnswers : answers.multipleChoiceAnswers
     }
     console.log(answer)
@@ -124,7 +84,7 @@ const Quiz = ({ quiz, createAnswer }) => {
         </div>
       )}
 
-      <Form onSubmit={submitAnswer}> <Button variant='primary' type ='sumbit'> Submit </Button> </Form>
+      <Form onSubmit={submitAnswer}> <Button variant='primary'> Submit </Button> </Form>
     </>
   )
 }
