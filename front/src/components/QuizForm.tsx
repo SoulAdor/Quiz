@@ -7,19 +7,9 @@ import PropTypes from 'prop-types'
 import { useCounter } from '../hooks/useCounter'
 import { createQuiz } from '../reducers/quizzesReducer'
 
-import TextSubmission from './SubmissionForms/Text'
-import RadioButtonSubmission from './SubmissionForms/RadioButton'
-import CheckboxSubmission from './SubmissionForms/Checkbox'
-
-import TextStatement from './StatementForms/Text'
+import { SubmissionType, getProblem, Problem } from './ProblemForm/Problem'
 
 import { Form } from 'react-bootstrap'
-
-enum ProblemType {
-  Text,
-  RadioButton,
-  Checkbox
-}
 
 const CreateQuiz = ({ createQuiz, history }) => {
   const [title, setTitle] = useState ('')
@@ -31,43 +21,9 @@ const CreateQuiz = ({ createQuiz, history }) => {
     setProblems (problems.map (problem => problem.id === updatedProblem.id ? updatedProblem : problem))
   }
 
-  const addProblem = problem => {
+  const addProblem = (submissionType : SubmissionType) => {
+    const problem = getProblem (idCounter.nextValue(), submissionType)
     setProblems ([...problems, problem])
-  }
-
-  const addTextProblem = () => {
-    const problem = {
-      id : idCounter.nextValue(),
-      statement : '',
-      submission: {
-        type : ProblemType.Text
-      }
-    }
-    addProblem (problem)
-  }
-
-  const addRadioButtonProblem = () => {
-    const problem = {
-      id : idCounter.nextValue(),
-      statement : '',
-      submission: {
-        type : ProblemType.RadioButton,
-        options : []
-      }
-    }
-    addProblem (problem)
-  }
-
-  const addCheckboxProblem = () => {
-    const problem = {
-      id : idCounter.nextValue(),
-      statement : '',
-      submission: {
-        type : ProblemType.Checkbox,
-        options : []
-      }
-    }
-    addProblem (problem)
   }
 
   const create = async () => {
@@ -77,25 +33,7 @@ const CreateQuiz = ({ createQuiz, history }) => {
     // alert('Your quiz has been added to database')
     // history.push('/')
   }
-
-  const getTextComponent = (submission, setSubmission) => (
-    <TextSubmission submission={submission} setSubmission={setSubmission}/>
-  )
   
-  const getRadioButtonComponent = (submission, setSubmission) => (
-    <RadioButtonSubmission submission={submission} setSubmission={setSubmission}/>
-  )
-
-  const getCheckboxComponent = (submission, setSubmission) => (
-    <CheckboxSubmission submission={submission} setSubmission={setSubmission}/>
-  )
-
-  var componentMap = {
-    [ProblemType.Text] : getTextComponent,
-    [ProblemType.RadioButton] : getRadioButtonComponent,
-    [ProblemType.Checkbox] : getCheckboxComponent
-  }
-
   return (
     <div>
       <h2 className='text-info'> Create new quiz </h2>
@@ -105,18 +43,11 @@ const CreateQuiz = ({ createQuiz, history }) => {
       <Form.Label> Description: </Form.Label>
       <Form.Control as='textarea' value={description} onChange={({ target }) => setDescription((target as HTMLTextAreaElement).value)} rows='10' placeholder="Enter description"/>
 
-      <div>
-        {problems.map (problem =>
-          <div key = {problem.id}>
-            <h3> Problem {problem.id} </h3>
-            <TextStatement statement={problem.statement} setStatement={statement => setProblem ({...problem, statement})}/>
-            {componentMap[problem.submission.type](problem.submission, submission => setProblem ({...problem, submission}))}
-          </div> )}
-      </div>
+      {problems.map (problem => <Problem key = {problem.id} problem={problem} setProblem={setProblem}/>)}
 
-      <button className="btn btn-primary" type="submit" onClick={addTextProblem}> {`Text`} </button>
-      <button className="btn btn-primary" type="submit" onClick={addRadioButtonProblem}> {`RadioButton`} </button>
-      <button className="btn btn-primary" type="submit" onClick={addCheckboxProblem}> {`Checkbox`} </button>
+      <button className="btn btn-primary" type="submit" onClick={() => addProblem (SubmissionType.Text) }> {`Text`} </button>
+      <button className="btn btn-primary" type="submit" onClick={() => addProblem (SubmissionType.RadioButton) }> {`RadioButton`} </button>
+      <button className="btn btn-primary" type="submit" onClick={() => addProblem (SubmissionType.Checkbox) }> {`Checkbox`} </button>
 
       <div>
         <button className="btn btn-primary" type="submit"  onClick={create}> {`Create`} </button>

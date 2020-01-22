@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useCounter } from '../../hooks/useCounter'
+import { useCounter } from '../../../hooks/useCounter'
 import Option from './Option'
 
 import { Button } from 'react-bootstrap'
