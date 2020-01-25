@@ -1,11 +1,11 @@
-const answersRouter = require('express').Router()
+const submissionsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('../utils/config')
 
-const Answer = require('../models/answer')
+const Submission = require('../models/submission')
 const User = require('../models/user')
 
-answersRouter.get('/', async (request, response, next) => {
+submissionsRouter.get('/', async (request, response, next) => {
   try {
     // Check token
     const token = request.token
@@ -16,14 +16,14 @@ answersRouter.get('/', async (request, response, next) => {
     const user = await User.findById(decodedToken.id)
     if (!user) return  response.status(401).json({ error: 'no user' })
 
-    const answers = await Answer.find({ user : user.id })
-    response.json(answers.map(answer => answer.toJSON()))
+    const submissions = await Submission.find({ user : user.id })
+    response.json(submissions.map(submission => submission.toJSON()))
   } catch (exception) {
     next(exception)
   }
 })
 
-answersRouter.post('/', async (request, response, next) => {
+submissionsRouter.post('/', async (request, response, next) => {
   try {
     // Check token
     const token = request.token
@@ -34,18 +34,18 @@ answersRouter.post('/', async (request, response, next) => {
     const user = await User.findById(decodedToken.id)
     if (!user) return response.status(401).json({ error: 'no user' })
 
-    // Save answer
-    const answer = new Answer({ ...request.body, user: user.id })
-    const savedAnswer = await answer.save()
+    // Save submission
+    const submission = new Submission({ ...request.body, user: user.id })
+    const savedSubmission = await submission.save()
 
     // Update user
-    user.answers = user.answers.concat(savedAnswer.id)
+    user.submissions = user.submissions.concat(savedSubmission.id)
     await user.save()
 
-    response.status(201).json(savedAnswer)
+    response.status(201).json(savedSubmission)
   } catch(exception) {
     next (exception)
   }
 })
 
-module.exports = answersRouter
+module.exports = submissionsRouter

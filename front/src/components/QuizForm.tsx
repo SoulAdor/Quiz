@@ -6,10 +6,11 @@ import PropTypes from 'prop-types'
 
 import { useCounter } from '../hooks/useCounter'
 import { createQuiz } from '../reducers/quizzesReducer'
-
 import { SubmissionType, getProblem, Problem } from './ProblemForm/Problem'
 
-import { Form } from 'react-bootstrap'
+const paddingStyle = {
+  padding: "10px",
+}
 
 const CreateQuiz = ({ createQuiz, history }) => {
   const [title, setTitle] = useState ('')
@@ -28,28 +29,34 @@ const CreateQuiz = ({ createQuiz, history }) => {
 
   const create = async () => {
     const newQuiz = { title, description, problems }
-    console.log(newQuiz)
-    // await createQuiz(newQuiz)
-    // alert('Your quiz has been added to database')
-    // history.push('/')
+    await createQuiz(newQuiz)
+    alert('Your quiz has been added to database')
+    history.push('/')
   }
-  
+
   return (
     <div>
-      <h2 className='text-info'> Create new quiz </h2>
-      <Form.Label> Title: </Form.Label>
-      <Form.Control type='text' value={title} onChange={({ target }) => setTitle(target.value)} name='title' placeholder="Enter title"/>
+      <h2 className='text-info d-flex justify-content-center' style={paddingStyle}> Create new quiz </h2>
+      <h3 className='d-flex justify-content-center' style={paddingStyle}> Title: </h3>
+      <input className="form-control" type='text' value={title} onChange={({ target }) => setTitle(target.value)} name='title' placeholder="Enter title"/>
 
-      <Form.Label> Description: </Form.Label>
-      <Form.Control as='textarea' value={description} onChange={({ target }) => setDescription((target as HTMLTextAreaElement).value)} rows='10' placeholder="Enter description"/>
+      <h3 className='d-flex justify-content-center' style={paddingStyle}> Description: </h3>
+      <textarea className="form-control" rows={10} value={description} onChange={({ target }) => setDescription(target.value)} placeholder="Enter description"/>
 
-      {problems.map (problem => <Problem key = {problem.id} problem={problem} setProblem={setProblem}/>)}
+      {problems.map (problem => 
+        <div key = {problem.id} style={paddingStyle}>
+          <Problem  problem={problem} setProblem={setProblem}/>
+        </div>
+      )}
+      
+      <h3 className='d-flex justify-content-center' style={paddingStyle}> Add answers: </h3>
+      <div className='d-flex justify-content-around' style={paddingStyle}>
+        <button className="btn btn-primary" type="submit" onClick={() => addProblem (SubmissionType.Text) }> {`Text`} </button>
+        <button className="btn btn-primary" type="submit" onClick={() => addProblem (SubmissionType.RadioButton) }> {`RadioButton`} </button>
+        <button className="btn btn-primary" type="submit" onClick={() => addProblem (SubmissionType.Checkbox) }> {`Checkbox`} </button>
+      </div>
 
-      <button className="btn btn-primary" type="submit" onClick={() => addProblem (SubmissionType.Text) }> {`Text`} </button>
-      <button className="btn btn-primary" type="submit" onClick={() => addProblem (SubmissionType.RadioButton) }> {`RadioButton`} </button>
-      <button className="btn btn-primary" type="submit" onClick={() => addProblem (SubmissionType.Checkbox) }> {`Checkbox`} </button>
-
-      <div>
+      <div className='d-flex justify-content-center' style={paddingStyle}>
         <button className="btn btn-primary" type="submit"  onClick={create}> {`Create`} </button>
       </div>
 
@@ -62,7 +69,8 @@ CreateQuiz.propTypes = {
 }
 
 const mapDispatchToProps = {
-  createQuiz
+  createQuiz,
+  getProblem
 }
 
 export default withRouter (connect(

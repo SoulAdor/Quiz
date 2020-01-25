@@ -1,102 +1,87 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { createAnswer } from '../reducers/answersReducer'
-import TextAnswer from './Answers/TextAnswer'
-import CheckboxesAnswer from './Answers/CheckboxesAnswer'
-import MultipleChoiceAnswer from './Answers/MultipleChoiceAnswer'
+import { Problem, getInitSubmissions } from './Problem/Problem'
+import { createSubmission } from '../reducers/submissionsReducer'
 
-import { Form, Button } from 'react-bootstrap'
+const paddingStyle = {
+  padding: "10px",
+}
 
-const Quiz = ({ quiz, createAnswer }) => {
-  const [answers, setAnswers] = useState ({
-    textAnswers : [],
-    checkboxesAnswers : [],
-    multipleChoiceAnswers : []
+const Quiz = ({ quiz, previousSubmissions, initialSubmissions, createSubmission }) => {
+  const [submissions, setSubmissions] = useState (null)
+  const [submitted, setSubmitted] = useState (false)
+
+  useEffect(() => { setSubmissions (initialSubmissions) }, [initialSubmissions])
+  useEffect(() => { if (previousSubmissions) (setSubmitted (true)) }, [previousSubmissions])
+  if (! (quiz && submissions) ) return null
+
+  console.log(previousSubmissions)
+
+  const getSubmission = (submissions, problem) => {
+    console.log(submissions)
+    return submissions.find (submission => submission.problemId === problem.id)
+  }
+
+  const setSubmission = newSubmission => {
+    setSubmissions(submissions.map (submission => 
+      submission.problemId === newSubmission.problemId ? newSubmission : submission
+    ))
+  }
+
+  const submit = () => {
+    createSubmission ({
+      quiz : quiz.id,
+      submissions
   })
-
-  if (!quiz) return null
-
-  const setTextAnswer = (newTextAnswer) => {
-    const newTextAnswers = answers.textAnswers.map (textAnswer => textAnswer.id === newTextAnswer.id ? newTextAnswer : textAnswer)
-    setAnswers ({...answers, textAnswers : newTextAnswers})
+    setSubmitted (true)
+    alert ('Submitted')
   }
 
-  const setCheckboxesAnswer = (newCheckboxesAnswer) => {
-    const newCheckboxesAnswers = answers.checkboxesAnswers.map (checkboxesAnswer => checkboxesAnswer.id === newCheckboxesAnswer.id ? newCheckboxesAnswer : checkboxesAnswer)
-    setAnswers ({...answers, checkboxesAnswers : newCheckboxesAnswers})
-  }
-
-  const setMultipleChoiceAnswer = (newMultipleChoiceAnswer) => {
-    const newMultipleChoiceAnswers = answers.multipleChoiceAnswers.map (multipleChoiceAnswer => multipleChoiceAnswer.id === newMultipleChoiceAnswer.id ? newMultipleChoiceAnswer : multipleChoiceAnswer)
-    setAnswers ({...answers, multipleChoiceAnswers : newMultipleChoiceAnswers})
-  }
-
-  const getTextAnswer = questionId => {
-    return answers.textAnswers.find (answer => answer.questionId === questionId)
-  }
-
-  const getCheckboxesAnswer = questionId => {
-    return answers.checkboxesAnswers.find (answer => answer.questionId === questionId)
-  }
-
-  const getMultipleChoiceAnswer = questionId => {
-    return answers.multipleChoiceAnswers.find (answer => answer.questionId === questionId)
-  }
-
-  const getQuestion = question => {
-    switch (question.type) {
-    case 'TEXT':
-      const textAnswer = getTextAnswer(question.id)
-      return textAnswer ? <TextAnswer question={question} answer={textAnswer} setAnswer={setTextAnswer}/> : null
-    case 'CHECKBOXES':
-      const checkboxesAnswer = getCheckboxesAnswer(question.id)
-      return checkboxesAnswer ? <CheckboxesAnswer question={question} answer={checkboxesAnswer} setAnswer={setCheckboxesAnswer}/> : null
-    case 'MULTIPLE_CHOICE':
-      console.log(answers)
-      const multipleChoiceAnswer = getMultipleChoiceAnswer(question.id)
-      return multipleChoiceAnswer ? <MultipleChoiceAnswer question={question} answer={multipleChoiceAnswer} setAnswer={setMultipleChoiceAnswer}/> : null
-    default:
-      alert ('Wrong queston type')
-      return null
-    }
-  }
-
-  const submitAnswer = event => {
-    event.preventDefault()
-    const answer = {
-      quiz: quiz.id,
-      textAnswers : answers.textAnswers,
-      checkboxAnswers : answers.checkboxesAnswers,
-      multipleChoiceAnswers : answers.multipleChoiceAnswers
-    }
-    console.log(answer)
+  const tryAgain = () => {
+    setSubmitted (false)
   }
 
   return (
-    <>
-      <h2>{quiz.title}</h2>
-      <p>{quiz.description}</p>
-      {quiz.questions.map (question => 
-        <div key={question.id}> 
-          <p>{question.question}</p>
-          {getQuestion (question)}
-        </div>
+    <div className="border border-dark">
+      <h2 className="d-flex justify-content-center">{quiz.title}</h2>
+      <p className="d-flex justify-content-center">{quiz.description}</p>
+      
+      {quiz.problems.map (problem => 
+        <Problem
+          key={problem.id} 
+          problem={problem}
+          submission={getSubmission(submitted ? previousSubmissions.submissions : submissions, problem)} 
+          setSubmission={setSubmission} 
+          submitted={submitted}
+        />
       )}
 
-      <Form onSubmit={submitAnswer}> <Button variant='primary'> Submit </Button> </Form>
-    </>
+      <div className="d-flex justify-content-center" style={paddingStyle}>
+        { submitted ? 
+          <button className="btn btn-primary" onClick={tryAgain}> {`Try again`} </button> :
+          <button className="btn btn-primary" onClick={submit}> {`Submit`} </button> 
+        }
+      </div>
+    </div>
   )
 }
 
 const mapDispatchToProps = {
-  createAnswer
+  createSubmission
 }
 
 const mapStateToProps = (state, ownProps) => {
+  const quiz = state.quizzes.find(quiz => quiz.id === ownProps.id)
   return {
-    quiz: state.quizzes.find(quiz => quiz.id === ownProps.id),
-    user: state.user
+    quiz,
+    user: state.user,
+    initialSubmissions: quiz ? getInitSubmissions (quiz.problems) : null,
+    previousSubmissions: quiz ? state.submissions.sort((a, b) => {
+      const dateA = new Date(a.submissionDate).getTime()
+      const dateB = new Date(b.submissionDate).getTime()
+      return dateA > dateB ? -1 : 1
+    }).find (submission => submission.quiz === quiz.id) : null
   }
 }
 

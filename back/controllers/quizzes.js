@@ -20,6 +20,7 @@ quizzesRouter.post('/', async (request, response, next) => {
     const user = await User.findById(decodedToken.id)
     if (!user) return  response.status(401).json({ error: 'no user' })
 
+    console.log(request.body)
     // Save quiz
     const quiz = new Quiz({ ...request.body, creator: user.id })
     const savedQuiz = await quiz.save()

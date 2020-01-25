@@ -7,3 +7,7 @@ export const setToken = newToken => {
 export const getToken = () => {
   return token
 }
+
+export const getConfig = () => { 
+  return { headers: { Authorization: getToken() } }
+}

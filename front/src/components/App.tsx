@@ -12,13 +12,13 @@ import Signup from './Signup'
 
 import { initQuizzes } from '../reducers/quizzesReducer'
 import { initUser } from '../reducers/userReducer'
-import { initAnswers } from '../reducers/answersReducer'
+import { initSubmissions } from '../reducers/submissionsReducer'
 
 
-const App = ({ initUser, initQuizzes, initAnswers, user }) => {
+const App = ({ initUser, initQuizzes, initSubmissions, user }) => {
   useEffect(() => {initUser ()}, [initUser])
   useEffect(() => {initQuizzes()}, [initQuizzes])
-  useEffect(() => { if (user) initAnswers()}, [initAnswers, user])
+  useEffect(() => { if (user) initSubmissions() }, [initSubmissions, user])
 
   return (
     <div className='container'>
@@ -39,14 +39,14 @@ const App = ({ initUser, initQuizzes, initAnswers, user }) => {
 App.propTypes = {
   initQuizzes: PropTypes.func.isRequired,
   initUser: PropTypes.func.isRequired,
-  initAnswers: PropTypes.func.isRequired,
+  initSubmissions: PropTypes.func.isRequired,
   user: PropTypes.object
 }
 
 const mapDispatchToProps = {
   initQuizzes,
   initUser,
-  initAnswers,
+  initSubmissions,
 }
 
 const mapStateToProps = (state, ownProps) => {

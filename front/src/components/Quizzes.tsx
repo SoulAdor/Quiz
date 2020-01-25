@@ -7,7 +7,7 @@ const Quizzes = ({ quizzes }) => {
   return (
     <ul>
       {quizzes.map (quiz =>
-        <h2 key={quiz.id}>
+        <h2 key={quiz.id} className="d-flex justify-content-center border border-dark">
           <Link to={`/quizzes/${quiz.id}`}> {quiz.title} </Link>
         </h2>
       )}

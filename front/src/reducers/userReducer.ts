@@ -1,7 +1,7 @@
 import { setToken } from '../services/token'
 import loginService from '../services/login'
 import usersService from '../services/users'
-import { resetAnswers } from './answersReducer'
+import { resetSubmissions } from './submissionsReducer'
 
 const userAtStart = null
 
@@ -33,9 +33,9 @@ export const logInUser = ({ username, password }) => {
 // Create user and then log him in
 export const signUpUser = ({ username, password, name }) => {
   return async dispatch => {
-    const user = await usersService.create({ username, password, name })
-    const tokenUser = await loginService.login({ username, password })
-    window.localStorage.setItem('loggedQuizAppUser', JSON.stringify(tokenUser))
+    await usersService.create({ username, password, name })
+    const user = await loginService.login({ username, password })
+    window.localStorage.setItem('loggedQuizAppUser', JSON.stringify(user))
     const token = user ? user.token : null
     setToken(token)
     dispatch({
@@ -48,7 +48,7 @@ export const signUpUser = ({ username, password, name }) => {
 export const logOutUser = () => {
   window.localStorage.setItem('loggedQuizAppUser', JSON.stringify(null))
   setToken(null)
-  resetAnswers()
+  resetSubmissions()
   return async dispatch => {
     dispatch({
       type: 'LOG_OUT_USER'

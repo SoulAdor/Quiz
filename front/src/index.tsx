@@ -7,14 +7,14 @@ import { Provider } from 'react-redux'
 
 import userReducer from './reducers/userReducer'
 import quizzesReducer from './reducers/quizzesReducer'
-import answersReducer from './reducers/answersReducer'
+import submissionsReducer from './reducers/submissionsReducer'
 
 import App from './components/App'
 
 const reducer = combineReducers({
   user: userReducer,
   quizzes: quizzesReducer,
-  answers: answersReducer
+  submissions: submissionsReducer
 })
 
 const store = createStore(reducer, applyMiddleware(thunk))

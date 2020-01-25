@@ -9,29 +9,15 @@ const quizSchema = mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
 
-  textQuestions: [{
-    id : { type: Number, required: true },
-    question : { type: String, required: true }
-  }],
-
-  multipleChoiceQuestions: [{
-    id : { type: Number, required: true },
-    question : { type: String, required: true },
-    answers : [{
-      id : { type: Number, required: true },
-      correct : { type: Boolean, required: true },
-      answer : { type: String, required: true }
-    }]
-  }],
-
-  checkboxQuestions: [{
-    id : { type: Number, required: true },
-    question : { type: String, required: true },
-    answers : [{
-      id : { type: Number, required: true },
-      correct : { type: Boolean, required: true },
-      answer : { type: String, required: true }
-    }]
+  problems: [{
+    statement : { type: String, required: true },
+    submission : {
+      type : { type: Number, required: true },
+      options : [{
+        text : { type: String, required: true },
+        correct : { type: Boolean, required: true }
+      }]
+    }
   }]
 })
 
@@ -45,17 +31,17 @@ const objectsToJson = objects => {
   return objects.map (object => objectToJson (object) )
 }
 
-const questionToJson = question => {
-  question.answers = objectsToJson (question.answers)
-  return objectToJson (question)
+const problemToJson = problem => {
+  const options = objectsToJson(problem.submission.options)
+  const submission = { ...problem.submission, options }
+  return objectToJson ({ ...problem, submission })
 }
 
 quizSchema.set('toJSON', {
   transform: (document, returnedQuiz) => {
+    console.log(returnedQuiz)
     returnedQuiz = objectToJson (returnedQuiz)
-    returnedQuiz.textQuestions = returnedQuiz.textQuestions.map (question => objectToJson (question))
-    returnedQuiz.multipleChoiceQuestions = returnedQuiz.multipleChoiceQuestions.map (question => questionToJson (question))
-    returnedQuiz.checkboxQuestions = returnedQuiz.checkboxQuestions.map (question => questionToJson (question))
+    returnedQuiz.problems = returnedQuiz.problems.map (problem => problemToJson (problem))
     delete returnedQuiz.__v
   }
 })

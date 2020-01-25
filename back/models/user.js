@@ -17,9 +17,9 @@ const userSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Quiz'
   }],
-  answers: [{
+  submissions: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Answer'
+    ref: 'Submission'
   }]
 })
 
