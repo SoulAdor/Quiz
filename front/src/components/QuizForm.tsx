@@ -12,11 +12,14 @@ const paddingStyle = {
   padding: "10px",
 }
 
-const CreateQuiz = ({ createQuiz, history }) => {
+const CreateQuiz = ({ user, createQuiz, history }) => {
   const [title, setTitle] = useState ('')
   const [description, setDescription] = useState ('')
   const [problems, setProblems] = useState ([])
   const idCounter = useCounter (1)
+
+  
+  if (! user ) return <h3 className="d-flex justify-content-center"> Log in to create quiz </h3>
 
   const setProblem = updatedProblem => {
     setProblems (problems.map (problem => problem.id === updatedProblem.id ? updatedProblem : problem))
@@ -68,12 +71,18 @@ CreateQuiz.propTypes = {
   createQuiz: PropTypes.func.isRequired
 }
 
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.user
+  }
+}
+
 const mapDispatchToProps = {
   createQuiz,
   getProblem
 }
 
 export default withRouter (connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(CreateQuiz) )

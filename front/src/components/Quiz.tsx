@@ -8,18 +8,18 @@ const paddingStyle = {
   padding: "10px",
 }
 
-const Quiz = ({ quiz, previousSubmissions, initialSubmissions, createSubmission }) => {
+const Quiz = ({ quiz, user, previousSubmissions, initialSubmissions, createSubmission }) => {
   const [submissions, setSubmissions] = useState (null)
   const [submitted, setSubmitted] = useState (false)
 
   useEffect(() => { setSubmissions (initialSubmissions) }, [initialSubmissions])
   useEffect(() => { if (previousSubmissions) (setSubmitted (true)) }, [previousSubmissions])
-  if (! (quiz && submissions) ) return null
 
-  console.log(previousSubmissions)
+  if (! user ) return <h3 className="d-flex justify-content-center"> Log in to see quiz </h3>
+  if (! quiz )  return null 
+  if (! submissions ) return null
 
   const getSubmission = (submissions, problem) => {
-    console.log(submissions)
     return submissions.find (submission => submission.problemId === problem.id)
   }
 

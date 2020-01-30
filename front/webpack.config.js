@@ -1,5 +1,5 @@
 {
-  resolve: {
-    extensions: [".js", ".json", ".ts", ".tsx"]
+  {
+    ['.js', '.json', '.ts', '.tsx']
   }
 }

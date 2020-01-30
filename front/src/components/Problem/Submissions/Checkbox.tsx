@@ -44,7 +44,7 @@ const CheckBox = ({ submissionForm, submission, setSubmission, submitted }) => {
           userChoice.chosen ? borderChosenColorStyle : borderNotChosenColorStyle
         return (
           <div className="checkbox" style={{...optionStyle, ...borderColor}} key={option.id}>
-            <label> <input type="checkbox" name={submission.id} onChange={submitted ? null : ()=>changeChoice(userChoice)} checked={userChoice.chosen}/> {option.text} </label>
+            <label> <input type="checkbox" name={submission.id} readOnly={submitted ? true : false } onChange={submitted ? null : ()=>changeChoice(userChoice)} checked={userChoice.chosen}/> {option.text} </label>
           </div>
         )
       })}

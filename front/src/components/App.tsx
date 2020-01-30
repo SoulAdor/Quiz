@@ -24,10 +24,10 @@ const App = ({ initUser, initQuizzes, initSubmissions, user }) => {
     <div className='container'>
       <Router>
         <Menu/>
-        <Route exact path="/" render={() => <Quizzes />} />
-        <Route exact path="/create" render={() => <QuizForm />} />
         <Route exact path="/login" render={() => <Login />} />
         <Route exact path="/signup" render={() => <Signup />} />
+        <Route exact path="/" render={() => <Quizzes />} />
+        <Route exact path="/create" render={() => <QuizForm />} />
         <Route exact path="/quizzes/:id" render={({ match }) =>
           <Quiz id={match.params.id} />
         } />

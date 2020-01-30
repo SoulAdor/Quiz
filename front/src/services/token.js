@@ -8,6 +8,6 @@ export const getToken = () => {
   return token
 }
 
-export const getConfig = () => { 
+export const getConfig = () => {
   return { headers: { Authorization: getToken() } }
 }

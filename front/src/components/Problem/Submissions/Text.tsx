@@ -7,7 +7,7 @@ const Text = ({ submissionForm, submission, setSubmission, submitted }) => {
 
   return (
     <div>
-      <textarea value={submission.text} onChange={submitted ? null : ({ target }) => changeText(target.value)} placeholder='Type your submission'/>
+      <textarea value={submission.text} readOnly={submitted ? true : false } onChange={submitted ? null : ({ target }) => changeText(target.value)} placeholder='Type your submission'/>
     </div>
   )
 }
