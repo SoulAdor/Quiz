@@ -32,8 +32,7 @@ const CreateQuiz = ({ user, createQuiz, history }) => {
 
   const create = async () => {
     const newQuiz = { title, description, problems }
-    await createQuiz(newQuiz)
-    alert('Your quiz has been added to database')
+    createQuiz(newQuiz)
     history.push('/')
   }
 
@@ -52,7 +51,7 @@ const CreateQuiz = ({ user, createQuiz, history }) => {
         </div>
       )}
       
-      <h3 className='d-flex justify-content-center' style={paddingStyle}> Add answers: </h3>
+      <h3 className='d-flex justify-content-center' style={paddingStyle}> Add problems: </h3>
       <div className='d-flex justify-content-around' style={paddingStyle}>
         <button className="btn btn-primary" type="submit" onClick={() => addProblem (SubmissionType.Text) }> {`Text`} </button>
         <button className="btn btn-primary" type="submit" onClick={() => addProblem (SubmissionType.RadioButton) }> {`RadioButton`} </button>

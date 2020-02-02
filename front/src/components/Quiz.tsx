@@ -29,11 +29,11 @@ const Quiz = ({ quiz, user, previousSubmissions, initialSubmissions, createSubmi
     ))
   }
 
-  const submit = () => {
-    createSubmission ({
-      quiz : quiz.id,
-      submissions
-  })
+  const submit = async () => {
+    await createSubmission ({
+        quiz : quiz.id,
+        submissions
+    })
     setSubmitted (true)
     alert ('Submitted')
   }

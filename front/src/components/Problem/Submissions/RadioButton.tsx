@@ -23,12 +23,14 @@ const borderWrongColorStyle = {
   borderColor : 'red'
 }
 
-const CheckBox = ({ submissionForm, submission, setSubmission, submitted }) => {
+const RadioButton = ({ submissionForm, submission, setSubmission, submitted }) => {
   const changeChoice = userChoice => {
-    const choices = submission.choices.map (choice => 
-      choice.optionId === userChoice.optionId ? {...choice, chosen : !choice.chosen} : choice
-    )
-    setSubmission ({...submission, choices})
+    if (!userChoice.chosen) {
+      const choices = submission.choices.map (choice => {
+        return {...choice, chosen : choice.optionId === userChoice.optionId}
+      })
+      setSubmission ({...submission, choices})
+    }
   }
   
   const getChoice = optionForm => {
@@ -44,7 +46,7 @@ const CheckBox = ({ submissionForm, submission, setSubmission, submitted }) => {
           userChoice.chosen ? borderChosenColorStyle : borderNotChosenColorStyle
         return (
           <div className="radio" style={{...optionStyle, ...borderColor}} key={option.id}>
-            <label> <input type="checkbox" name={submission.id} readOnly={submitted ? true : false } onChange={submitted ? null : ()=>changeChoice(userChoice)} checked={userChoice.chosen}/> {option.text} </label>
+            <label> <input type="radio" name={submission.id} readOnly={submitted ? true : false } onChange={submitted ? null : ()=>changeChoice(userChoice)} checked={userChoice.chosen}/> {option.text} </label>
           </div>
         )
       })}
@@ -53,4 +55,4 @@ const CheckBox = ({ submissionForm, submission, setSubmission, submitted }) => {
   
 }
 
-export default CheckBox
+export default RadioButton
